@@ -1,0 +1,148 @@
+# To execute this docker-compose yml file use `docker-compose -f <file_name> up`
+# Add the `-d` flag at the end for detached execution
+
+# selenoid - http://localhost:8083/#/
+# selenoid- http://localhost:4444/
+version: '3'
+services:
+  selenoid:
+    image: "aerokube/selenoid:latest"
+    container_name: selenoid
+    restart: on-failure
+    networks:
+      - selenoid
+    volumes:
+      - "./config/browsers/:/etc/selenoid/" # assumed current dir contains browsers.json
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./config/video:/opt/selenoid/video"
+      - "./config/logs:/opt/selenoid/logs"
+    environment:
+      - OVERRIDE_VIDEO_OUTPUT_DIR=c/Users/jeeva/OneDrive/Desktop/SeleniumAdvacncedFramework/Eclipse/SeleniumAdvancedFramework/config/video
+
+    command: [ "-conf", "/etc/selenoid/browsers.json", "-video-output-dir", "/opt/selenoid/video", "-log-output-dir", "/opt/selenoid/logs", "-container-network", "selenoid", "-limit", "30" ]
+    ports:
+      - "4444:4444"
+
+  selenoid-ui:
+    image: "aerokube/selenoid-ui:latest"
+    container_name: selenoid-ui
+    restart: on-failure
+    links:
+      - selenoid
+    ports:
+      - "8083:8080"
+    networks:
+      - selenoid
+    command: ["--selenoid-uri", "http://selenoid:4444"]
+
+#  selenoid-video-recorder:
+#    image: "selenoid/video-recorder:latest"
+#    depends_on:
+#      - selenoid
+#      - selenoid-ui
+#    networks:
+#      - selenoid
+
+  chrome_102.0:
+    image: "selenoid/vnc_chrome:102.0"
+    container_name: chrome_102.0
+    restart: on-failure
+    links:
+      - selenoid
+      - selenoid-ui
+    depends_on:
+      - selenoid
+      - selenoid-ui
+    networks:
+      - selenoid
+    shm_size: 2gb
+    environment:
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+      - SE_NODE_MAX_SESSIONS=5
+      - JAVA_OPTS=-XX:ActiveProcessorCount=5
+    volumes:
+      - /dev/shm:/dev/shm
+  chrome_91.0:
+    image: "selenoid/vnc_chrome:91.0"
+    container_name: chrome_91.0
+    restart: on-failure
+    links:
+      - selenoid
+      - selenoid-ui
+    depends_on:
+      - selenoid
+      - selenoid-ui
+    networks:
+      - selenoid
+    shm_size: 2gb
+    environment:
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+      - SE_NODE_MAX_SESSIONS=5
+      - JAVA_OPTS=-XX:ActiveProcessorCount=5
+    volumes:
+      - /dev/shm:/dev/shm
+
+  firefox_100.0:
+    image: "selenoid/vnc_firefox:100.0"
+    container_name: firefox_100.0
+    restart: on-failure
+    links:
+      - selenoid
+      - selenoid-ui
+    depends_on:
+      - selenoid
+      - selenoid-ui
+    networks:
+      - selenoid
+    shm_size: 2gb
+    environment:
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+      - SE_NODE_MAX_SESSIONS=5
+      - JAVA_OPTS=-XX:ActiveProcessorCount=5
+    volumes:
+      - /dev/shm:/dev/shm
+
+  firefox_83.0:
+    image: "selenoid/vnc_firefox:83.0"
+    container_name: firefox_83.0
+    restart: on-failure
+    links:
+      - selenoid
+      - selenoid-ui
+    depends_on:
+      - selenoid
+      - selenoid-ui
+    networks:
+      - selenoid
+    shm_size: 2gb
+    environment:
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+      - SE_NODE_MAX_SESSIONS=5
+      - JAVA_OPTS=-XX:ActiveProcessorCount=5
+    volumes:
+      - /dev/shm:/dev/shm
+
+  microsoft_edge_101.0:
+    image: "browsers/edge:101.0"
+    container_name: microsoft_edge_101.0
+    restart: on-failure
+    links:
+      - selenoid
+      - selenoid-ui
+    depends_on:
+      - selenoid
+      - selenoid-ui
+    networks:
+      - selenoid
+    shm_size: 2gb
+    environment:
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+      - SE_NODE_MAX_SESSIONS=5
+      - JAVA_OPTS=-XX:ActiveProcessorCount=5
+    volumes:
+      - /dev/shm:/dev/shm
+
+networks:
+  selenoid:
+    external:
+      name: selenoid

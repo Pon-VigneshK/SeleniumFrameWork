@@ -1,0 +1,26 @@
+{
+  "QA" : {
+    "amazonHomePageTest" : [ {
+      "searchItem" : "Mobiles, Computers",
+      "environment" : "QA",
+      "priority" : "1",
+      "execute" : "Yes",
+      "subSearchItem" : "Laptops",
+      "testcasename" : "TC001_amazonHomePageTest"
+    }, {
+      "searchItem" : "Men",
+      "environment" : "QA",
+      "priority" : "2",
+      "execute" : "Yes",
+      "subSearchItem" : "Clothing",
+      "testcasename" : "TC002_amazonHomePageTest"
+    }, {
+      "searchItem" : "TV, Appliances, Electronics",
+      "environment" : "QA",
+      "priority" : "3",
+      "execute" : "Yes",
+      "subSearchItem" : "Televisions",
+      "testcasename" : "TC003_amazonHomePageTest"
+    } ]
+  }
+}

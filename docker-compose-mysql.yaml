@@ -1,0 +1,22 @@
+# To execute this docker-compose yml file use `docker-compose -f <file_name> up`
+# Add the `-d` flag at the end for detached execution
+version: '3'
+services:
+  mysql_database:
+    image: mysql:latest
+    cap_add:
+      - SYS_NICE
+    restart: always
+    environment:
+      - MYSQL_DATABASE=sys
+      - MYSQL_ROOT_PASSWORD=mauFJcuf5dhRMQrjj
+      - MYSQL_USER = cabin
+      - MYSQL_PASSWORD = cabinpw
+    ports:
+      - '3308:3306'
+    volumes:
+      - db_volume:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+volumes:
+  db_volume:
+    driver: local

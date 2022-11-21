@@ -1,0 +1,13 @@
+{
+  "selectqueries": {
+    "amazonHomePageTest": "select t1.testcasename, t1.environment, t1.execute, t1.searchItem,t1.subSearchItem, t2.priority from amazonhomepagetest t1 left join amazon_testcase_runnerlist t2 on t1.testcasename = t2.testcasename where t1.environment='QA' and t1.execute='Yes';",
+
+
+  },
+  "updatequeries": {
+   },
+  "runnerlistqueries": {
+    "testCaseLists": "SELECT * FROM development.amazon_testcase_runnerlist;"
+  }
+
+}
